@@ -11,6 +11,37 @@
   padding: 10px;
 }
 
+.messages {
+  flex: 1;
+  margin-bottom: 16px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.message {
+   margin-bottom: 9px;
+}
+
+.message-bubble {
+  padding: 10px;
+  border-radius: 20px;
+  max-width: 80%;
+  display: inline-block;
+}
+
+.user {
+  background-color: #007BFF;
+  align-self: flex-end;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+.bot {
+  background-color: #3F4552;
+  align-self: flex-start;
+  margin-right: auto;
+}
+
 .chat-input {
   flex: 0 0 auto;
   padding: 10px;
