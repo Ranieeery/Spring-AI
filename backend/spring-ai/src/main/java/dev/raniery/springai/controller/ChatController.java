@@ -1,10 +1,13 @@
 package dev.raniery.springai.controller;
 
+import dev.raniery.springai.dto.ChatMessage;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api/chat")
 class ChatController {
 
     private final ChatClient chatClient;
@@ -13,10 +16,10 @@ class ChatController {
         this.chatClient = chatClientBuilder.build();
     }
 
-    @GetMapping("/chat")
-    String generation(String userInput) {
+    @PostMapping("/simple-chat")
+    String generation(ChatMessage message) {
         return this.chatClient.prompt()
-            .user(userInput)
+            .user(message.message())
             .call()
             .content();
     }
