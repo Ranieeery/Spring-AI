@@ -3,6 +3,7 @@ package dev.raniery.springai.controller;
 import dev.raniery.springai.dto.ChatMessage;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,10 +18,11 @@ class ChatController {
     }
 
     @PostMapping("/simple-chat")
-    String generation(ChatMessage message) {
-        return this.chatClient.prompt()
+    ChatMessage simpleChat(@RequestBody ChatMessage message) {
+        String response = this.chatClient.prompt()
             .user(message.message())
             .call()
             .content();
+        return new ChatMessage(response);
     }
 }
