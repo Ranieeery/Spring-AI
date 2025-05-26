@@ -10,5 +10,5 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './app.scss',
 })
 export class App {
-  readonly title = 'angular-ai';
+  readonly title = 'Angular AI';
 }

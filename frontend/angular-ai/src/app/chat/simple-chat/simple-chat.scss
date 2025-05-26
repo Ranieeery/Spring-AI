@@ -16,30 +16,35 @@
   margin-bottom: 16px;
   overflow-y: auto;
   padding-right: 8px;
+  display: flex;
+  flex-direction: column;
 }
 
 .message {
-   margin-bottom: 9px;
+  margin-bottom: 9px;
+  display: flex;
+  width: 100%;
 }
 
 .message-bubble {
-  padding: 10px;
+  padding: 10px 20px;
   border-radius: 20px;
   max-width: 80%;
   display: inline-block;
 }
 
 .user {
-  background-color: #007BFF;
-  align-self: flex-end;
-  justify-content: flex-end;
+  background-color: #007bff;
   margin-left: auto;
+  margin-right: 0;
+  border-bottom-right-radius: 0.25rem;
 }
 
 .bot {
-  background-color: #454B4B;
-  align-self: flex-start;
+  background-color: #454b4b;
+  margin-left: 0;
   margin-right: auto;
+  border-bottom-left-radius: 0.25rem;
 }
 
 .chat-input {
@@ -64,13 +69,19 @@
   animation: typing 1s infinite ease-in-out;
 }
 
-.typing span:nth-child(1) { animation-delay: 200ms; }
-.typing span:nth-child(2) { animation-delay: 400ms; }
-.typing span:nth-child(3) { animation-delay: 600ms; }
+.typing span:nth-child(1) {
+  animation-delay: 200ms;
+}
+.typing span:nth-child(2) {
+  animation-delay: 400ms;
+}
+.typing span:nth-child(3) {
+  animation-delay: 600ms;
+}
 
 @keyframes typing {
   50% {
-      opacity: 1;
-      transform: scale(1.2);
+    opacity: 1;
+    transform: scale(1.2);
   }
 }
