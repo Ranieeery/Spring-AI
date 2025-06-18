@@ -7,7 +7,7 @@ import { ChatResponse } from '../response/chat-response';
 })
 export class ChatService {
 
-  private readonly API = '/api/chat/simple-chat';
+  private readonly API = '/api/chat/chat-memory';
   private http = inject(HttpClient);
 
   sendMessage(message: string) {

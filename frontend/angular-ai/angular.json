@@ -54,9 +54,11 @@
             }
           },
           "defaultConfiguration": "production"
-        },
-        "serve": {
+        },        "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.js"
+          },
           "configurations": {
             "production": {
               "buildTarget": "angular-ai:build:production"
