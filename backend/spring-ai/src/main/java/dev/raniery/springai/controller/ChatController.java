@@ -3,7 +3,6 @@ package dev.raniery.springai.controller;
 import dev.raniery.springai.dto.ChatMessage;
 import dev.raniery.springai.service.ChatService;
 import dev.raniery.springai.service.MemoryChatService;
-import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
