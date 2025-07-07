@@ -2,6 +2,7 @@ package dev.raniery.springai.service;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,8 @@ public class MemoryChatService {
 
     public MemoryChatService(ChatClient.Builder chatClientBuilder, ChatMemory chatMemory) {
         this.chatClient = chatClientBuilder
-            .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
+            .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build(),
+                new SimpleLoggerAdvisor())
             .build();
     }
 
