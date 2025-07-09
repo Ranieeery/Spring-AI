@@ -1,5 +1,6 @@
 package dev.raniery.springai.service;
 
+import dev.raniery.springai.repository.MemoryChatRepository;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
@@ -13,7 +14,13 @@ public class MemoryChatService {
 
     private final ChatClient chatClient;
 
-    public MemoryChatService(ChatClient.Builder chatClientBuilder, JdbcChatMemoryRepository jdbcChatMemoryRepository) {
+    private final MemoryChatRepository memoryChatRepository;
+
+    private static final String USER_ID = "raniery";
+    private static final String DESCRIPTION_PROMPT = "Generate a chat description for the following message, limiting it to 30 characters: ";
+
+    public MemoryChatService(ChatClient.Builder chatClientBuilder, JdbcChatMemoryRepository jdbcChatMemoryRepository, MemoryChatRepository memoryChatRepository) {
+        this.memoryChatRepository = memoryChatRepository;
 
         ChatMemory chatMemory = MessageWindowChatMemory.builder()
             .chatMemoryRepository(jdbcChatMemoryRepository)
@@ -26,10 +33,27 @@ public class MemoryChatService {
             .build();
     }
 
-    public String simpleChat(String message) {
+    public String chat(String message, String chatId) {
         return this.chatClient.prompt()
-            .advisors( a -> a.param(ChatMemory.CONVERSATION_ID, "1234"))
+            .advisors( a -> a.param(ChatMemory.CONVERSATION_ID, chatId))
             .user(message)
+            .call()
+            .content();
+    }
+
+    public record NewChatResponse(String chatId, String description, String response) {}
+
+    public NewChatResponse createChat(String message) {
+        String description = generateDescription(message);
+        String chatId = this.memoryChatRepository.generateChatId(USER_ID, description);
+        String response = this.chat(description, chatId);
+
+        return new NewChatResponse(chatId, description, response);
+    }
+
+    private String generateDescription(String message) {
+        return this.chatClient.prompt()
+            .user(DESCRIPTION_PROMPT + message)
             .call()
             .content();
     }

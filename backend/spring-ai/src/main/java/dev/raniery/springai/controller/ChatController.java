@@ -27,10 +27,15 @@ class ChatController {
         return new ChatMessage(response);
     }
 
-    @PostMapping("/chat-memory")
-    ChatMessage simpleChatMemory(@RequestBody ChatMessage message) {
-        String response = memoryChatService.simpleChat(message.message());
+//    @PostMapping("/chat-memory")
+//    ChatMessage simpleChatMemory(@RequestBody ChatMessage message) {
+//        String response = memoryChatService.chat(message.message());
+//
+//        return new ChatMessage(response);
+//    }
 
-        return new ChatMessage(response);
+    @PostMapping("/start")
+    MemoryChatService.NewChatResponse startNewChat(@RequestBody ChatMessage chatMessage) {
+        return this.memoryChatService.createChat(chatMessage.message());
     }
 }
