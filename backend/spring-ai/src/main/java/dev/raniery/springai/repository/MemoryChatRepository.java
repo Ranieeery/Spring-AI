@@ -1,7 +1,10 @@
 package dev.raniery.springai.repository;
 
+import dev.raniery.springai.dto.Chat;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class MemoryChatRepository {
@@ -15,5 +18,12 @@ public class MemoryChatRepository {
     public String generateChatId(String userId, String description) {
         final String sql = "INSERT INTO chat_memory (user_id, description) VALUES (?, ?) RETURNING conversation_id";
         return jdbcTemplate.queryForObject(sql, String.class, userId, description);
+    }
+
+    public List<Chat> getAllChatsForUser(String userId) {
+        final String sql = "SELECT conversation_id, user_id, description FROM chat_memory WHERE user_id = ?";
+        return jdbcTemplate.query(sql, (rs, _) ->
+                new Chat(rs.getString("conversation_id"), rs.getString("description")),
+            userId);
     }
 }

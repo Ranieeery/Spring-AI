@@ -1,12 +1,13 @@
 package dev.raniery.springai.controller;
 
+import dev.raniery.springai.dto.Chat;
 import dev.raniery.springai.dto.ChatMessage;
+import dev.raniery.springai.dto.ChatResponse;
 import dev.raniery.springai.service.ChatService;
 import dev.raniery.springai.service.MemoryChatService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/chat")
@@ -27,15 +28,20 @@ class ChatController {
         return new ChatMessage(response);
     }
 
-//    @PostMapping("/chat-memory")
-//    ChatMessage simpleChatMemory(@RequestBody ChatMessage message) {
-//        String response = memoryChatService.chat(message.message());
-//
-//        return new ChatMessage(response);
-//    }
+    @PostMapping("/{chatId}")
+    ChatMessage simpleChatMemory(@PathVariable String chatId, @RequestBody ChatMessage message) {
+        String response = memoryChatService.chat(message.message(), chatId);
+
+        return new ChatMessage(response);
+    }
 
     @PostMapping("/start")
-    MemoryChatService.NewChatResponse startNewChat(@RequestBody ChatMessage chatMessage) {
+    ChatResponse startNewChat(@RequestBody ChatMessage chatMessage) {
         return this.memoryChatService.createChat(chatMessage.message());
+    }
+
+    @GetMapping
+    List<Chat> getAllChatsForUser() {
+        return this.memoryChatService.getAllChatsForUser();
     }
 }

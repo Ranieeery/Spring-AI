@@ -1,5 +1,7 @@
 package dev.raniery.springai.service;
 
+import dev.raniery.springai.dto.Chat;
+import dev.raniery.springai.dto.ChatResponse;
 import dev.raniery.springai.repository.MemoryChatRepository;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -8,6 +10,8 @@ import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MemoryChatService {
@@ -35,20 +39,18 @@ public class MemoryChatService {
 
     public String chat(String message, String chatId) {
         return this.chatClient.prompt()
-            .advisors( a -> a.param(ChatMemory.CONVERSATION_ID, chatId))
+            .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, chatId))
             .user(message)
             .call()
             .content();
     }
 
-    public record NewChatResponse(String chatId, String description, String response) {}
-
-    public NewChatResponse createChat(String message) {
+    public ChatResponse createChat(String message) {
         String description = generateDescription(message);
         String chatId = this.memoryChatRepository.generateChatId(USER_ID, description);
         String response = this.chat(description, chatId);
 
-        return new NewChatResponse(chatId, description, response);
+        return new ChatResponse(chatId, description, response);
     }
 
     private String generateDescription(String message) {
@@ -56,5 +58,9 @@ public class MemoryChatService {
             .user(DESCRIPTION_PROMPT + message)
             .call()
             .content();
+    }
+
+    public List<Chat> getAllChatsForUser() {
+        return this.memoryChatRepository.getAllChatsForUser(USER_ID);
     }
 }
