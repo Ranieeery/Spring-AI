@@ -1,6 +1,7 @@
 package dev.raniery.springai.controller;
 
 import dev.raniery.springai.dto.Chat;
+import dev.raniery.springai.dto.ChatMemoryMessage;
 import dev.raniery.springai.dto.ChatMessage;
 import dev.raniery.springai.dto.ChatResponse;
 import dev.raniery.springai.service.ChatService;
@@ -43,5 +44,10 @@ class ChatController {
     @GetMapping
     List<Chat> getAllChatsForUser() {
         return this.memoryChatService.getAllChatsForUser();
+    }
+
+    @GetMapping("/{chatId}")
+    List<ChatMemoryMessage> getChatMessages(@PathVariable String chatId) {
+        return this.memoryChatService.getChatMessages(chatId);
     }
 }

@@ -1,6 +1,7 @@
 package dev.raniery.springai.service;
 
 import dev.raniery.springai.dto.Chat;
+import dev.raniery.springai.dto.ChatMemoryMessage;
 import dev.raniery.springai.dto.ChatResponse;
 import dev.raniery.springai.repository.MemoryChatRepository;
 import org.springframework.ai.chat.client.ChatClient;
@@ -37,6 +38,7 @@ public class MemoryChatService {
             .build();
     }
 
+    //TODO: chatId validation
     public String chat(String message, String chatId) {
         return this.chatClient.prompt()
             .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, chatId))
@@ -62,5 +64,9 @@ public class MemoryChatService {
 
     public List<Chat> getAllChatsForUser() {
         return this.memoryChatRepository.getAllChatsForUser(USER_ID);
+    }
+
+    public List<ChatMemoryMessage> getChatMessages(String chatId) {
+        return this.memoryChatRepository.getChatMessages(chatId);
     }
 }
